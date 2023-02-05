@@ -1,11 +1,12 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import Book from "./book.jsx";
 
-const App = ({ arg }) => {
-  return <div>{`Hello, ${arg}!`}</div>;
+const App = () => {
+  return <Book/>;
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  const rootEl = document.getElementById("root");
-  ReactDOM.render(<App arg="Mom!" />, rootEl);
-});
+import { createRoot } from 'react-dom/client';
+const container = document.getElementById('root');
+const root = createRoot(container); 
+root.render(<App tab="home" />);
