@@ -17,6 +17,9 @@ ARG BUNDLER_VERSION=2.4.1
 RUN gem update --system --no-document && \
     gem install -N bundler -v ${BUNDLER_VERSION}
 
+# Install Rust
+ARG RUST_VERSION=1.67.0
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain $RUST_VERSION
 
 # Throw-away build stage to reduce size of final image
 FROM base as build
