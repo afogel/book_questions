@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import QuestionForm from "./question_form.jsx";
 
 const Book = () => {
   return (
@@ -8,9 +8,8 @@ const Book = () => {
       <h1 className="text-4xl block mx-auto">Ask my book</h1>
       <div className="w-1/2 block mx-auto">
         <p className="text-xl text-gray-400 text-wrap ">This is an experiment in using AI to make a book's content more accessible. Ask a question and AI'll answer it in real-time:</p>
-        <input type="textarea" className="rounded-md" />
+        <QuestionForm />
       </div>
-
     </div>
   );
 }
