@@ -1,6 +1,6 @@
-# fly.toml file generated for wandering-pine-240 on 2023-02-05T12:37:35+02:00
+# fly.toml file generated for cool-leaf-5501 on 2023-02-05T17:10:51+02:00
 
-app = "wandering-pine-240"
+app = "cool-leaf-5501"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
@@ -12,7 +12,7 @@ processes = []
 
 [[services]]
   http_checks = []
-  internal_port = 3000
+  internal_port = 8080
   processes = ["app"]
   protocol = "tcp"
   script_checks = []
