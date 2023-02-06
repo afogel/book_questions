@@ -9,7 +9,9 @@
     "react-dom": "^18.2.0"
   },
   "scripts": {
-    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets"
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets",
+    "build_prod": "esbuild app/javascript/*.* --bundle --minify --outdir=app/assets/builds --public-path=assets"
   },
   "packageManager": "yarn@1.22.19"
 }
+
