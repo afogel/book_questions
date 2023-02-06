@@ -3,10 +3,11 @@ require "pdf-reader"
 
 module Decrees
   class ExtractTokensFromPages
-    attr_reader :reader, :tokenizer
+    attr_reader :reader, :tokenizer, :filename
 
     def initialize(path:)
       @reader = PDF::Reader.new(path)
+      @filename = Pathname.new(path).basename.to_s.split(".").first
       @tokenizer = Tokenizers.from_pretrained("gpt2")
     end
 
@@ -16,6 +17,8 @@ module Decrees
       end.compact.reduce(Polars::DataFrame.new) do |memo, df|
         memo.vstack(df)
       end
+      puts "Writing to CSV"
+      pages_df.write_csv("#{filename}.pages.csv")
       pages_df
     end
 

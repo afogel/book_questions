@@ -51,6 +51,7 @@ gem "bootsnap", require: false
 # Tokenize strings
 gem 'tokenizers'
 gem "polars-df"
+gem "ruby-openai"
 
 # Pdf reader
 gem 'pdf-reader'
