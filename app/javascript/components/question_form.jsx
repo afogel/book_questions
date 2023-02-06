@@ -2,7 +2,7 @@ import React, { useState }  from 'react';
 import Answer from './answer.jsx';
 
 const QuestionForm = () => {
-  const [question, setQuestion] = useState('');
+  const [question, setQuestion] = useState('What is 99 bottles about?');
   const [answer, setAnswer] = useState('');
   const [csrf, _] = useState(document.querySelector("meta[name='csrf-token']").getAttribute("content"));
 
@@ -20,7 +20,7 @@ const QuestionForm = () => {
         "Accept": "application/json",
         'X-CSRF-Token': csrf
       },
-      body: JSON.stringify({ question: question })
+      body: JSON.stringify({ question: { question: question } })
     }).then(resp => resp.json())
       .then(a => setAnswer(a.answer))
       .catch(error => console.log(error))
@@ -35,9 +35,9 @@ const QuestionForm = () => {
     <form onSubmit={e => { handleSubmit(e) }}>
       <textarea 
         name='question' 
-        value='What is 99 Bottles about?'
+        value={question}
         className='rounded-md w-full my-4 p-2 min-h-12'
-        onChange={handleChange}
+        onChange={e => handleChange(e)}
       />
       <div className="flex justify-around p-2">
         <input 
