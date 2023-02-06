@@ -12,6 +12,7 @@ const QuestionForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const correctlyStructuredQuestion = question.slice(-1) === "?" ? question : `${question}?`
     fetch("/api/v1/questions", {
       method: "POST",
       mode: "cors",
@@ -20,7 +21,7 @@ const QuestionForm = () => {
         "Accept": "application/json",
         'X-CSRF-Token': csrf
       },
-      body: JSON.stringify({ question: { question: question } })
+      body: JSON.stringify({ question: { question: correctlyStructuredQuestion } })
     }).then(resp => resp.json())
       .then(a => setAnswer(a.answer))
       .catch(error => console.log(error))
