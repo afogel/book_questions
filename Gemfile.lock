@@ -123,6 +123,8 @@ GEM
     minitest (5.17.0)
     msgpack (1.6.0)
     multi_xml (0.6.0)
+    neighbor (0.2.2)
+      activerecord (>= 5.2)
     net-imap (0.3.4)
       date
       net-protocol
@@ -245,6 +247,7 @@ DEPENDENCIES
   dockerfile-rails (>= 1.0.0)
   jbuilder
   jsbundling-rails
+  neighbor
   pdf-reader
   pg (~> 1.1)
   polars-df

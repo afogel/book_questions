@@ -52,6 +52,7 @@ gem "bootsnap", require: false
 gem 'tokenizers'
 gem "polars-df"
 gem "ruby-openai"
+gem "neighbor"
 
 # Pdf reader
 gem 'pdf-reader'
