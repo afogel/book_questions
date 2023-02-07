@@ -15,35 +15,15 @@ module Decrees
     def call
       puts "Creating embeddings"
       document_embeddings = @pages_df.rows.map.with_index do |page, index|
-        if index < 3
-          title = page[0]
-          content = page[1]
-          puts "Generating embeddings for #{title}"
-          # get the embeddings for the document
-          embeddings = client.embeddings(parameters: {model: DOC_EMBEDDINGS_MODEL,input: content})["data"][0]["embedding"]
-          # create a dataframe with the title and the embeddings
-          df_row = embeddings.each.with_index.reduce(Polars::DataFrame.new([{title: title}])) do |memo, (value,idx)| 
-            memo.hstack(Polars::DataFrame.new([{"#{idx}" => value }])) 
-          end
-          df_row
-        else
-          nil
-        end
+        title = page[0]
+        content = page[1]
+        puts "Generating embeddings for #{title}"
+        # get the embeddings for the document
+        embeddings = client.embeddings(parameters: {model: DOC_EMBEDDINGS_MODEL,input: content})["data"][0]["embedding"]
+        puts "Adding page #{index}"
+        # create a page with the title and embeddings
+        Page.create(title: title, embedding: embeddings)
       end
-      doc_embeddings = document_embeddings.compact.reduce(Polars::DataFrame.new) do |memo, df|
-        memo.vstack(df)
-      end
-      debugger
-        puts "Writing embeddings to CSV"
-        doc_embeddings.write_csv("#{filename}.embeddings.csv")
-      File.open("#{filename}.embeddings.csv", 'w') do |f|
-        writer = CSV.new(f)
-        writer << ["title"] + (0..4095).to_a
-        doc_embeddings.each_with_index do |embedding, i|
-          writer << ["Page #{i + 1}"] + embedding
-        end
-      end
-      puts "Complete"
     end
   end
 end
