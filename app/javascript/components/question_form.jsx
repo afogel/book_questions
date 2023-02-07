@@ -2,7 +2,8 @@ import React, { useState }  from 'react';
 import Answer from './answer.jsx';
 
 const QuestionForm = () => {
-  const [question, setQuestion] = useState('What is this article about?');
+  const [question, setQuestion] = useState('What is the main claim of this article?');
+  const [loading, setLoading] = useState(false);
   const [answer, setAnswer] = useState('');
   const [csrf, _] = useState(document.querySelector("meta[name='csrf-token']").getAttribute("content"));
 
@@ -12,6 +13,7 @@ const QuestionForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     const correctlyStructuredQuestion = question.slice(-1) === "?" ? question : `${question}?`
     fetch("/api/v1/questions", {
       method: "POST",
@@ -23,7 +25,10 @@ const QuestionForm = () => {
       },
       body: JSON.stringify({ question: { question: correctlyStructuredQuestion } })
     }).then(resp => resp.json())
-      .then(a => setAnswer(a.answer))
+      .then(a => {
+        setLoading(false)
+        setAnswer(a.answer)
+      })
       .catch(error => console.log(error))
   }
 
@@ -50,7 +55,8 @@ const QuestionForm = () => {
           I'm Feeling Lucky
         </div>
       </div>
-      {answer && <Answer answer={answer} />}
+      {answer && !loading && <Answer answer={answer} />}
+      {loading && <div className='text-center'>The AI is "thinking"...</div>}
     </form>
   )
 }
