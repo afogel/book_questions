@@ -1,4 +1,4 @@
-require 'tokenizers'
+require "tokenizers"
 require "pdf-reader"
 
 module Decrees
@@ -22,7 +22,7 @@ module Decrees
       pages_df
     end
 
-    private 
+    private
 
     def count_tokens(text)
       tokenizer.encode(text, add_special_tokens: false).tokens.length
@@ -33,8 +33,8 @@ module Decrees
       content = page_text.split(" ").join(" ")
       magic_number = 4
       Polars::DataFrame.new([{
-        title: "Page #{index}", 
-        content: content, 
+        title: "Page #{index}",
+        content: content,
         tokens: count_tokens(content) + magic_number
       }])
     end

@@ -19,7 +19,7 @@ module Decrees
         content = page[1]
         puts "Generating embeddings for #{title}"
         # get the embeddings for the document
-        embeddings = client.embeddings(parameters: {model: DOC_EMBEDDINGS_MODEL,input: content})["data"][0]["embedding"]
+        embeddings = client.embeddings(parameters: {model: DOC_EMBEDDINGS_MODEL, input: content})["data"][0]["embedding"]
         puts "Adding page #{index}"
         # create a page with the title and embeddings
         Page.create(title: title, embedding: embeddings)
