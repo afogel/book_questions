@@ -2,7 +2,7 @@ import React, { useState }  from 'react';
 import Answer from './answer.jsx';
 
 const QuestionForm = () => {
-  const [question, setQuestion] = useState('What is 99 bottles about?');
+  const [question, setQuestion] = useState('What is this article about?');
   const [answer, setAnswer] = useState('');
   const [csrf, _] = useState(document.querySelector("meta[name='csrf-token']").getAttribute("content"));
 
