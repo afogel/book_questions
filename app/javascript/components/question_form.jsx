@@ -34,7 +34,22 @@ const QuestionForm = () => {
 
   const handleFeelingLucky = (e) => {
     e.preventDefault();
-    setAnswer("It's my turn to ask a question...do ya feel lucky punk? Well...? Do ya?");
+    setLoading(true);
+    fetch("/api/v1/questions/1", {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'X-CSRF-Token': csrf
+      }
+    }).then(resp => resp.json())
+    .then(a => {
+      setLoading(false)
+      setQuestion(a.question)
+      setAnswer(a.answer)
+    })
+    .catch(error => console.log(error))
   }
 
   return (

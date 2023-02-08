@@ -30,7 +30,7 @@ class GetQueryAnswer
     )
     puts "Returning answer"
     begin
-     return_val = response["choices"].map { |c| c["text"] }.join(" ").strip 
+      return_val = response["choices"].map { |c| c["text"] }.join(" ").strip
     rescue => exception
       puts "Error: #{exception}"
     end

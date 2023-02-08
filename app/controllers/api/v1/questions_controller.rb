@@ -1,4 +1,13 @@
 class Api::V1::QuestionsController < ApplicationController
+  def show
+    @question = Question.find(Question.pluck(:id).sample)
+    if @question
+      render json: {question: @question.question, answer: @question.answer}, status: :ok
+    else
+      render json: {error: "No questions found"}, status: 404
+    end
+  end
+
   def create
     @question = Question.find_or_initialize_by(question_params)
     if @question.id?
