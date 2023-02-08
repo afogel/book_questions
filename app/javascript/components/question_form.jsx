@@ -1,5 +1,6 @@
 import React, { useState }  from 'react';
 import Answer from './answer.jsx';
+import Question from './question.jsx'
 
 const QuestionForm = () => {
   const [question, setQuestion] = useState('What is the main claim of this article?');
@@ -56,8 +57,9 @@ const QuestionForm = () => {
     <form onSubmit={e => { handleSubmit(e) }}>
       <textarea 
         name='question' 
-        value={question}
+        placeholder={question}
         className='rounded-md w-full my-4 p-2 min-h-12'
+        required={true}
         onChange={e => handleChange(e)}
       />
       <div className="flex justify-around p-2">
@@ -70,6 +72,7 @@ const QuestionForm = () => {
           I'm Feeling Lucky
         </div>
       </div>
+      {!loading && <Question question={question} />}
       {answer && !loading && <Answer answer={answer} />}
       {loading && <div className='text-center'>The AI is "thinking"...</div>}
     </form>
