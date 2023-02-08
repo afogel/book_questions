@@ -4,6 +4,7 @@ import Question from './question.jsx'
 
 const QuestionForm = () => {
   const [question, setQuestion] = useState('What is the main claim of this article?');
+  const [askedQuestion, setAskedQuestion] = useState(null);
   const [loading, setLoading] = useState(false);
   const [answer, setAnswer] = useState('');
   const [csrf, _] = useState(document.querySelector("meta[name='csrf-token']").getAttribute("content"));
@@ -28,6 +29,7 @@ const QuestionForm = () => {
     }).then(resp => resp.json())
       .then(a => {
         setLoading(false)
+        setAskedQuestion(question)
         setAnswer(a.answer)
       })
       .catch(error => console.log(error))
@@ -47,7 +49,7 @@ const QuestionForm = () => {
     }).then(resp => resp.json())
     .then(a => {
       setLoading(false)
-      setQuestion(a.question)
+      setAskedQuestion(a.question)
       setAnswer(a.answer)
     })
     .catch(error => console.log(error))
@@ -72,7 +74,7 @@ const QuestionForm = () => {
           I'm Feeling Lucky
         </div>
       </div>
-      {!loading && <Question question={question} />}
+      {askedQuestion && !loading && <Question question={askedQuestion} />}
       {answer && !loading && <Answer answer={answer} />}
       {loading && <div className='text-center'>The AI is "thinking"...</div>}
     </form>
