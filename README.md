@@ -3,10 +3,10 @@
 A Ruby on Rails and React project that utilizes AI to make an article interrogable. The article "Models of Situated Action" by David Williamson Shaffer, published in 2012, is the focus of this experiment. Ask a question and get an instant answer in real-time.
 Installation Requirements
 
-    Ruby on Rails
-    React
-    Rust
-    [Pg_vector](https://github.com/pgvector/pgvector) Postgres extension
+- Ruby on Rails
+- React
+- Rust
+- [Pg_vector](https://github.com/pgvector/pgvector) Postgres extension
 
 ## Installation Instructions
 
