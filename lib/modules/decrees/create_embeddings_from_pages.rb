@@ -14,7 +14,7 @@ module Decrees
 
     def call
       puts "Creating embeddings"
-      document_embeddings = @pages_df.rows.map.with_index do |page, index|
+      @pages_df.rows.map.with_index do |page, index|
         title = page[0]
         content = page[1]
         puts "Generating embeddings for #{title}"
