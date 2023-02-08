@@ -29,40 +29,40 @@ class GetQueryAnswer
       }
     )
     puts "Returning answer"
-    [response["choices"].map { |c| c["text"] }.join(" ").strip, context]
+    begin
+     return_val = response["choices"].map { |c| c["text"] }.join(" ").strip 
+    rescue => exception
+      puts "Error: #{exception}"
+    end
+    [return_val, context]
   end
 
   private
 
   def build_prompt(query, ordered_page_titles)
-    begin
+    header = %(David Williamson Shaffer is widely-cited professor at University of Wisconsin-Madison and the
+      founder of the field of Quantitative Ethnography. Please keep your answers to three sentences
+      maximum, and speak in complete sentences. Stop speaking once your point is made.\n\n
+      Please answer the following question: #{query}\n\n
+      Here is some context that may be useful, pulled from an article in which Dr. Shaffer introduces Epistemic Frame Theory:\n
+    ).strip_heredoc
 
-      header = %(David Williamson Shaffer is widely-cited professor at University of Wisconsin-Madison and the
-        founder of the field of Quantitative Ethnography. Please keep your answers to three sentences
-        maximum, and speak in complete sentences. Stop speaking once your point is made.\n\n
-        Please answer the following question: #{query}\n\n
-        Here is some context that may be useful, pulled from an article in which Dr. Shaffer introduces Epistemic Frame Theory:\n
-      ).strip_heredoc
+    completed_prompt = header + SEPARATOR
 
-      completed_prompt = header + SEPARATOR
+    remaining_tokens = MAX_SECTION_LEN - completed_prompt.split(" ").length
+    context = ""
 
-      remaining_tokens = MAX_SECTION_LEN - completed_prompt.split(" ").length
-      context = ""
-
-      ordered_page_titles.each do |title|
-        row = page_contents[Polars.col("title") == title]
-        if remaining_tokens - (row["tokens"][0] + SEPARATOR.length) > 0
-          remaining_tokens -= row["tokens"][0]
-          completed_prompt += row["content"][0] + SEPARATOR
-          context += row["content"][0] + SEPARATOR
-        else
-          completed_prompt += row["content"][0][0..(remaining_tokens - SEPARATOR.length)] + SEPARATOR
-          context += row["content"][0][0..(remaining_tokens - SEPARATOR.length)] + SEPARATOR
-          break
-        end
+    ordered_page_titles.each do |title|
+      row = page_contents[Polars.col("title") == title]
+      if remaining_tokens - (row["tokens"][0] + SEPARATOR.length) > 0
+        remaining_tokens -= row["tokens"][0]
+        completed_prompt += row["content"][0] + SEPARATOR
+        context += row["content"][0] + SEPARATOR
+      else
+        completed_prompt += row["content"][0][0..(remaining_tokens - SEPARATOR.length)] + SEPARATOR
+        context += row["content"][0][0..(remaining_tokens - SEPARATOR.length)] + SEPARATOR
+        break
       end
-    rescue => e
-      puts "Error in the build_prompt method: #{e}"
     end
 
     [completed_prompt, context]

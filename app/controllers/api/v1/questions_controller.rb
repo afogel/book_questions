@@ -8,7 +8,9 @@ class Api::V1::QuestionsController < ApplicationController
       # Get nearest neighbors to the query embedding
       ordered_page_titles = Page.nearest_neighbors(:embedding, @question.embedding, distance: :cosine).pluck(:title)
       answer, context = GetQueryAnswer.new.call(query: @question.question, ordered_page_titles: ordered_page_titles)
+      puts "Answer: #{answer}"
       @question.answer = answer
+      puts "Context: #{context}"
       @question.context = context
       @question.ask_count = 0
     end
