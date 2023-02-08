@@ -19,6 +19,7 @@ class GetQueryAnswer
   def call(query:, ordered_page_titles:)
     puts "Generating prompt using context"
     prompt, context = build_prompt(query, ordered_page_titles)
+    puts "Generating answer"
     response = client.completions(
       parameters: {
         model: completions_model,
@@ -27,35 +28,41 @@ class GetQueryAnswer
         prompt: prompt
       }
     )
+    puts "Returning answer"
     [response["choices"].map { |c| c["text"] }.join(" ").strip, context]
   end
 
   private
 
   def build_prompt(query, ordered_page_titles)
-    header = %(David Williamson Shaffer is widely-cited professor at University of Wisconsin-Madison and the
-      founder of the field of Quantitative Ethnography. Please keep your answers to three sentences
-      maximum, and speak in complete sentences. Stop speaking once your point is made.\n\n
-      Please answer the following question: #{query}\n\n
-      Here is some context that may be useful, pulled from an article in which Dr. Shaffer introduces Epistemic Frame Theory:\n
-    ).strip_heredoc
+    begin
 
-    completed_prompt = header + SEPARATOR
+      header = %(David Williamson Shaffer is widely-cited professor at University of Wisconsin-Madison and the
+        founder of the field of Quantitative Ethnography. Please keep your answers to three sentences
+        maximum, and speak in complete sentences. Stop speaking once your point is made.\n\n
+        Please answer the following question: #{query}\n\n
+        Here is some context that may be useful, pulled from an article in which Dr. Shaffer introduces Epistemic Frame Theory:\n
+      ).strip_heredoc
 
-    remaining_tokens = MAX_SECTION_LEN - completed_prompt.split(" ").length
-    context = ""
+      completed_prompt = header + SEPARATOR
 
-    ordered_page_titles.each do |title|
-      row = page_contents[Polars.col("title") == title]
-      if remaining_tokens - (row["tokens"][0] + SEPARATOR.length) > 0
-        remaining_tokens -= row["tokens"][0]
-        completed_prompt += row["content"][0] + SEPARATOR
-        context += row["content"][0] + SEPARATOR
-      else
-        completed_prompt += row["content"][0][0..(remaining_tokens - SEPARATOR.length)] + SEPARATOR
-        context += row["content"][0][0..(remaining_tokens - SEPARATOR.length)] + SEPARATOR
-        break
+      remaining_tokens = MAX_SECTION_LEN - completed_prompt.split(" ").length
+      context = ""
+
+      ordered_page_titles.each do |title|
+        row = page_contents[Polars.col("title") == title]
+        if remaining_tokens - (row["tokens"][0] + SEPARATOR.length) > 0
+          remaining_tokens -= row["tokens"][0]
+          completed_prompt += row["content"][0] + SEPARATOR
+          context += row["content"][0] + SEPARATOR
+        else
+          completed_prompt += row["content"][0][0..(remaining_tokens - SEPARATOR.length)] + SEPARATOR
+          context += row["content"][0][0..(remaining_tokens - SEPARATOR.length)] + SEPARATOR
+          break
+        end
       end
+    rescue => e
+      puts "Error in the build_prompt method: #{e}"
     end
 
     [completed_prompt, context]

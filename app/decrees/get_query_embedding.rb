@@ -9,7 +9,7 @@ class GetQueryEmbedding
   end
 
   def call(content:, model:)
-    puts "Creating embeddings for #{model.class.name}: #{content}}"
+    puts "Creating embeddings for #{model.class.name}: #{content}"
     client.embeddings(parameters: {model: query_embeddings_model, input: content})["data"][0]["embedding"]
   end
 end
