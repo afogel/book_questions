@@ -4,6 +4,33 @@
 
 This was originally a project I created to apply for a product engineer position. Given that the person I sent my application never responded to the email, I consider this work open to anyone that wants an example of a 100% native ruby implementation to create vector embeddings using ruby libraries using the OpenAI API, including: create an embedding for a question, perform a similarity search on segments of the article to give context to openAI API's to give appropriate context, and return a result. The questions and results are cached in order to reduce calls to the OpenAI API.
 
+Here were the requirements of the task:
+Rebuild [askmybook.com](http://askmybook.com) in Rails and React.
+Must-dos include:
+
+- Script to format PDF manuscript as local data file with embeddings
+- Text box to receive question
+- Back-end that:
+    - fetches most relevant embeddings using local data file
+    - caches answers, otherwise hits OpenAI for answer
+- Front-end that displays answer
+
+A good response shows off your ability to:
+
+- Understand existing code
+- Read through API docs
+- Create a new Rails project
+- Install and use React within it
+- *Coding!*
+
+Currently, the project relies on a few Python libraries. Find Ruby equivalents or rewrite the code such that they are no longer required (this should be possible by keeping the content and embeddings that index them in one file, instead of across two). 
+
+### Notes
+
+- Please structure your commits so that they're easily understandable
+- Automated tests are encouraged but not required
+- Explain a couple of the big architectural decisions you've made, and anything you learned/would do differently the next time around
+
 ## Overview
 
 A Ruby on Rails and React project that utilizes AI to make an article interrogable. The article "Models of Situated Action" by David Williamson Shaffer, published in 2012, is the focus of this experiment. Ask a question and get an instant answer in real-time.
