@@ -91,9 +91,9 @@ Feel free to contribute to the project and make it better. If you face any issue
 
 ## Additional Thoughts on the Implementation (reflection on architecture and approach, given the task of building within 6-18 hours)
 
-My implementation initially started much more closely mapped to a ruby translation of what you had built in python, though it evolved as I did more research and discovered new gems/libraries I wanted to use.
+My implementation initially started much more closely mapped to a ruby translation of what had been built in python, though it evolved as I did more research and discovered new gems/libraries I wanted to use.
 
-For the frontend, I decided to use pure functional React components as they’re simpler for me to reason about, as well as seem to be more paradigmatically modern React. I reached for tailwindCSS as it’s a utility framework I’m familiar with and, for me, makes building out styling much faster.
+For the frontend, I decided to use pure functional React components as they’re simpler to reason about, as well as seem to be more paradigmatically modern React. I reached for tailwindCSS as it’s a utility framework I’m familiar with and, for me, makes building out styling much faster.
 
 Overall, the FE is fairly simple, with most of the complexity living in the `QuestionForm` component. Since the FE functionality was relatively simple, I chose to keep the FE as vanilla as possible. This means I did not add additional wrappers around AJAX calls, instead just building the API calls using the native `fetch`.
 
